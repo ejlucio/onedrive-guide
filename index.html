@@ -90,7 +90,12 @@ figure .shot{border:1px solid var(--line);border-radius:12px;overflow:hidden;bac
 figure svg{display:block;width:100%;height:auto}
 figcaption{font-size:.88rem;color:var(--muted);margin-top:8px}
 .time{font-size:.85rem;color:var(--muted)}
-.listen{margin-left:auto}
+.audio-bar{display:flex;gap:14px;align-items:flex-start;background:var(--teal-soft);border:1px solid #bfe2e4;border-radius:12px;padding:12px 16px;margin:10px 0 18px}
+.audio-ic{font-size:1.5rem;line-height:1}
+.audio-main{flex:1;min-width:0}
+.audio-main audio{display:block;width:100%;margin:8px 0 4px;height:40px}
+.audio-main details summary{cursor:pointer;color:var(--teal);font-weight:700;font-size:.9rem}
+.audio-main details p{font-size:.92rem;color:#334155;margin:8px 0 0}
 .tts-note{font-size:.82rem;color:var(--muted)}
 
 /* demo player */
@@ -248,8 +253,14 @@ table.simple th{background:var(--bg);color:var(--navy)}
     </div>
   </div>
 
-  <div class="crumb"><span class="pill">Introduction</span><span class="time">⏱ About 5 minutes</span>
-    <button class="btn btn-ghost btn-sm listen" data-listen="p-home">🔊 Listen to this page</button></div>
+  <div class="crumb"><span class="pill">Introduction</span><span class="time">⏱ About 5 minutes</span></div>
+  <div class="audio-bar">
+    <span class="audio-ic" aria-hidden="true">🎧</span>
+    <div class="audio-main"><strong>Listen to this page</strong> <span class="time">(0:49 narration)</span>
+      <audio controls preload="none" src="narration-home.mp3">Your browser does not support audio. Read the transcript below.</audio>
+      <details><summary>Read the transcript</summary><p>Welcome to Microsoft OneDrive: A Step-by-Step Guide for UTRGV students. Picture this. It&#x27;s 10:45 p.m., your group project is due at midnight, and three people have three different versions of the same paper in their email. Somebody&#x27;s edits get lost, and the link you send your professor says: You need permission. OneDrive fixes this. It&#x27;s cloud storage that comes with your UTRGV Microsoft 365 account. Your files are saved online automatically, you can open them from any computer, on or off campus, and your whole group can work in the same document at the same time. In this module, you&#x27;ll learn to create and save a file, share it with the right permission, and edit and comment together. Let&#x27;s get started.</p></details>
+    </div>
+  </div>
 
   <div class="narrate">
   <h2 style="margin-top:.4em">Why this matters for your classes</h2>
@@ -266,7 +277,7 @@ table.simple th{background:var(--bg);color:var(--navy)}
   <h2>How this module works</h2>
   <div class="grid3">
     <div class="card"><h3>🧭 Move at your own pace</h3><p>Use the <strong>Module menu</strong> on the left (or <span class="ui">☰ Menu</span> on a phone) and the <strong>Next / Back</strong> buttons at the bottom of every page. Completed pages get a green check.</p></div>
-    <div class="card"><h3>🖼️ Watch, then try</h3><p>Each lesson has numbered screenshots, an animated demo or audio, and a practice activity with instant feedback. Retry anything as many times as you like.</p></div>
+    <div class="card"><h3>🖼️ Watch, then try</h3><p>Each lesson has numbered screenshots, an animated demo, recorded audio narration, and a practice activity with instant feedback. Retry anything as many times as you like.</p></div>
     <div class="card"><h3>✅ Finish strong</h3><p>The module ends with a summary, flashcards, and a final assessment: a hands-on checklist plus a 10-question quiz. Passing score: 80%.</p></div>
   </div>
 
@@ -282,8 +293,14 @@ table.simple th{background:var(--bg);color:var(--navy)}
 
 <!-- ================= LESSON 1 ================= -->
 <section class="page" id="p-lesson-1" data-title="Lesson 1: Create &amp; Save">
-  <div class="crumb"><span class="pill">Lesson 1 of 3</span><span class="pill orange">Objective 1</span><span class="time">⏱ About 12 minutes</span>
-    <button class="btn btn-ghost btn-sm listen" data-listen="p-lesson-1">🔊 Listen</button></div>
+  <div class="crumb"><span class="pill">Lesson 1 of 3</span><span class="pill orange">Objective 1</span><span class="time">⏱ About 12 minutes</span></div>
+  <div class="audio-bar">
+    <span class="audio-ic" aria-hidden="true">🎧</span>
+    <div class="audio-main"><strong>Listen to this lesson</strong> <span class="time">(1:09 narration)</span>
+      <audio controls preload="none" src="narration-lesson-1.mp3">Your browser does not support audio. Read the transcript below.</audio>
+      <details><summary>Read the transcript</summary><p>Lesson one. Create and save a Word document in OneDrive. In this lesson, you&#x27;ll open OneDrive, create a new Word document, give it a name you&#x27;ll recognize, and find it again. There&#x27;s no save button to worry about. Word for the web saves your work automatically. Step one. Sign in. Go to microsoft365.com, and sign in with your UTRGV email and password. Then click the OneDrive icon. Step two. Create a new file. Click Create or upload, then choose Word document. Step three. Name it right away. Your new file is called Document1. Click that name at the top of the window, type a name you&#x27;ll recognize, and press Enter. Step four. Type your content. Watch for the word Saved next to the file name. That means OneDrive saved your work. Step five. Find it again. Go back to OneDrive and click My files. Your document is right there in the list. One last tip. Document1 tells nobody anything. A good file name answers three questions: which class, which assignment, and whose. Pick a pattern, and stick with it.</p></details>
+    </div>
+  </div>
   <h1>Create and save a Word document in OneDrive</h1>
   <p class="lead narrate">In this lesson you'll open OneDrive, create a new Word document, give it a name you'll recognize later, and find it again. There is no "Save" button to worry about: Word for the web saves your work automatically.</p>
 
@@ -386,8 +403,14 @@ table.simple th{background:var(--bg);color:var(--navy)}
 
 <!-- ================= LESSON 2 ================= -->
 <section class="page" id="p-lesson-2" data-title="Lesson 2: Share &amp; Permissions">
-  <div class="crumb"><span class="pill">Lesson 2 of 3</span><span class="pill orange">Objective 2</span><span class="time">⏱ About 12 minutes</span>
-    <button class="btn btn-ghost btn-sm listen" data-listen="p-lesson-2">🔊 Listen</button></div>
+  <div class="crumb"><span class="pill">Lesson 2 of 3</span><span class="pill orange">Objective 2</span><span class="time">⏱ About 12 minutes</span></div>
+  <div class="audio-bar">
+    <span class="audio-ic" aria-hidden="true">🎧</span>
+    <div class="audio-main"><strong>Listen to this lesson</strong> <span class="time">(1:06 narration)</span>
+      <audio controls preload="none" src="narration-lesson-2.mp3">Your browser does not support audio. Read the transcript below.</audio>
+      <details><summary>Read the transcript</summary><p>Lesson two. Share a file, and choose the right permission. When you share, you send one link to the same file. Nobody gets a copy, so everyone always sees the latest version. The most important decision is the permission. Can view means the person can open and read the file, but can&#x27;t change it. Use it when you turn in a link to your professor, or share finished notes. Can edit means the person can type, delete, and comment. Use it for teammates on a group project, a lab partner, or a tutor helping you revise. A good rule of thumb: give the least access someone needs. You can always change it later. Here&#x27;s how to share. Click Share in the top right corner. Type your teammate&#x27;s name or UTRGV email. Click the pencil icon and choose Can edit, or Can view. Add a short message if you like, and click Send. Before you submit a link for an assignment, check the link setting, choose Can view unless your instructor asks for edit access, and test the link in a private browser window. That way, your professor never sees: You need permission.</p></details>
+    </div>
+  </div>
   <h1>Share a file and choose the right permission</h1>
   <p class="lead narrate">Sharing sends one link to the same file. Nobody gets a copy, so everyone sees the latest version. The most important decision is the permission: can the other person only look, or can they change things?</p>
 
@@ -478,8 +501,14 @@ table.simple th{background:var(--bg);color:var(--navy)}
 
 <!-- ================= LESSON 3 ================= -->
 <section class="page" id="p-lesson-3" data-title="Lesson 3: Edit, Comment &amp; Reopen">
-  <div class="crumb"><span class="pill">Lesson 3 of 3</span><span class="pill orange">Objective 3</span><span class="time">⏱ About 12 minutes</span>
-    <button class="btn btn-ghost btn-sm listen" data-listen="p-lesson-3">🔊 Listen</button></div>
+  <div class="crumb"><span class="pill">Lesson 3 of 3</span><span class="pill orange">Objective 3</span><span class="time">⏱ About 12 minutes</span></div>
+  <div class="audio-bar">
+    <span class="audio-ic" aria-hidden="true">🎧</span>
+    <div class="audio-main"><strong>Listen to this lesson</strong> <span class="time">(0:54 narration)</span>
+      <audio controls preload="none" src="narration-lesson-3.mp3">Your browser does not support audio. Read the transcript below.</audio>
+      <details><summary>Read the transcript</summary><p>Lesson three. Edit, comment, and reopen a shared file. Once a file is shared, your group can work in it at the same time. You&#x27;ll even see each other&#x27;s colored cursors as you type. To make an edit, open the shared file from Shared in OneDrive, or from the link in your email. Click where you want to change the text, and type. Your changes save automatically. Comments let you give feedback without changing someone else&#x27;s writing. Highlight the text, then click Review, and New Comment. Type helpful feedback. To notify a teammate, type the @ sign and their name, like: @Alex, can you add a source here? They&#x27;ll get an email. Post the comment, and when the issue is fixed, mark it resolved. Later, you can find the updated file under Recent or Shared in OneDrive. And if something gets deleted by mistake, version history lets you restore an older copy.</p></details>
+    </div>
+  </div>
   <h1>Edit, comment, and reopen a shared file</h1>
   <p class="lead narrate">Once a file is shared, your group can work in it at the same time. You'll see each other's colored cursors as you type. Comments let you give feedback without changing someone else's writing.</p>
 
@@ -554,8 +583,14 @@ table.simple th{background:var(--bg);color:var(--navy)}
 
 <!-- ================= SUMMARY ================= -->
 <section class="page" id="p-summary" data-title="Summary &amp; Review">
-  <div class="crumb"><span class="pill">Review</span><span class="time">⏱ About 5 minutes</span>
-    <button class="btn btn-ghost btn-sm listen" data-listen="p-summary">🔊 Listen</button></div>
+  <div class="crumb"><span class="pill">Review</span><span class="time">⏱ About 5 minutes</span></div>
+  <div class="audio-bar">
+    <span class="audio-ic" aria-hidden="true">🎧</span>
+    <div class="audio-main"><strong>Listen to this review</strong> <span class="time">(0:37 narration)</span>
+      <audio controls preload="none" src="narration-summary.mp3">Your browser does not support audio. Read the transcript below.</audio>
+      <details><summary>Read the transcript</summary><p>Let&#x27;s review. You learned one workflow you can use for every class. Create a file with a clear name. Share it with the right permission. And collaborate with edits and comments, all in one file that&#x27;s always up to date. Remember these five takeaways. No more attachments: share one link instead of emailing copies. AutoSave is on: look for the word Saved. Least access wins: professors usually get Can view, and teammates get Can edit. Test before you submit. And comment, don&#x27;t overwrite. When you&#x27;re ready, flip through the flashcards, then move on to the final assessment. You&#x27;ve got this.</p></details>
+    </div>
+  </div>
   <h1>Summary: Your OneDrive workflow</h1>
   <p class="lead narrate">You learned one workflow you can reuse for every class: <strong>create</strong> a file with a clear name, <strong>share</strong> it with the right permission, and <strong>collaborate</strong> with edits and comments, all in one file that is always up to date.</p>
 
@@ -837,7 +872,7 @@ function show(){
   window.scrollTo(0,0);
   document.getElementById("sideNav").classList.remove("open");
   document.getElementById("menuBtn").setAttribute("aria-expanded","false");
-  stopSpeech();
+  document.querySelectorAll("audio").forEach(function(a){try{a.pause()}catch(e){}});
   var main=document.getElementById("content");if(main&&document.activeElement&&document.activeElement.tagName==="A")main.focus({preventScroll:true});
 }
 function updateProgress(){
@@ -850,23 +885,6 @@ function updateProgress(){
 window.addEventListener("hashchange",show);
 document.getElementById("menuBtn").addEventListener("click",function(){
   var n=document.getElementById("sideNav");var o=n.classList.toggle("open");this.setAttribute("aria-expanded",o?"true":"false");
-});
-
-/* ---- text to speech (audio narration) ---- */
-var speaking=null;
-function stopSpeech(){try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}
-  document.querySelectorAll("[data-listen]").forEach(function(b){b.textContent=b.dataset.orig||b.textContent;});speaking=null;}
-document.querySelectorAll("[data-listen]").forEach(function(b){
-  b.dataset.orig=b.textContent;
-  b.addEventListener("click",function(){
-    if(!("speechSynthesis" in window)){b.textContent="Audio not supported in this browser";return;}
-    if(speaking===b){stopSpeech();return;}
-    stopSpeech();
-    var sec=document.getElementById(b.dataset.listen);
-    var txt=Array.prototype.map.call(sec.querySelectorAll(".narrate"),function(n){return n.innerText}).join(" ");
-    try{var u=new SpeechSynthesisUtterance(txt);u.rate=1;u.lang="en-US";u.onend=function(){stopSpeech()};
-      speechSynthesis.speak(u);speaking=b;b.textContent="⏹ Stop audio";}catch(e){b.textContent="Audio unavailable";}
-  });
 });
 
 /* ---- animated demo player ---- */
