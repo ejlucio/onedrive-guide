@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microsoft OneDrive: A Step-by-Step Guide for UTRGV Students</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#17304B; --navy-2:#22436a; --teal:#0E7C86; --teal-soft:#E3F2F3;
+  --orange:#E0602A; --orange-soft:#FDEEE6; --ink:#1d2733; --muted:#5b6876;
+  --line:#dbe2e8; --bg:#F4F6F8; --card:#fff; --good:#1F7A3D; --good-soft:#E6F4EA;
+  --bad:#B42318; --bad-soft:#FDECEA; --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:17px;line-height:1.6}
+h1,h2,h3,h4{font-family:Lexend,system-ui,sans-serif;color:var(--navy);line-height:1.25;margin:0 0 .5em}
+h1{font-size:2rem} h2{font-size:1.5rem;margin-top:1.4em} h3{font-size:1.15rem;margin-top:1.2em}
+p{margin:0 0 1em} a{color:var(--teal)}
+button,input,select{font:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;background:#fff;padding:.5em 1em;z-index:99}
+.skip:focus{left:8px}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px}
+.brand{display:flex;align-items:center;gap:10px;font-family:Lexend,system-ui,sans-serif;font-weight:600;font-size:1rem;color:#fff;text-decoration:none}
+.brand-badge{width:34px;height:34px;border-radius:9px;background:var(--orange);display:grid;place-items:center}
+.brand small{display:block;font-weight:500;font-size:.75rem;opacity:.75}
+.topbar .spacer{flex:1}
+.progress-wrap{display:flex;align-items:center;gap:10px;font-size:.85rem;white-space:nowrap}
+.progress-bar{width:140px;height:8px;border-radius:9px;background:rgba(255,255,255,.2);overflow:hidden}
+.progress-bar span{display:block;height:100%;background:var(--orange);width:0;transition:width .4s}
+.menu-btn{display:none;background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:6px 12px;cursor:pointer}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:270px 1fr;max-width:1240px;margin:0 auto;gap:28px;padding:24px 18px 60px}
+nav.side{position:sticky;top:76px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+nav.side h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:4px 8px 10px}
+nav.side ol{list-style:none;margin:0;padding:0}
+nav.side li a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;text-decoration:none;color:var(--ink);font-size:.95rem}
+nav.side li a:hover{background:var(--bg)}
+nav.side li a[aria-current="page"]{background:var(--teal-soft);color:var(--navy);font-weight:700}
+.dot{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.72rem;font-weight:700;color:var(--muted);background:#fff}
+li.done .dot{background:var(--good);border-color:var(--good);color:#fff}
+.sect-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:12px 10px 4px}
+.side-foot{border-top:1px solid var(--line);margin-top:12px;padding:12px 10px 2px;font-size:.82rem;color:var(--muted)}
+
+main{min-width:0}
+section.page{display:none;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:34px 40px}
+section.page.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.crumb{font-size:.85rem;color:var(--muted);margin-bottom:6px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--teal-soft);color:var(--teal)}
+.pill.orange{background:var(--orange-soft);color:var(--orange)}
+.lead{font-size:1.12rem;color:#334155}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:36px;padding-top:20px;border-top:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:10px;padding:11px 18px;cursor:pointer;font-weight:700;text-decoration:none;font-size:.97rem}
+.btn-primary{background:var(--teal);color:#fff}.btn-primary:hover{background:#0b6970}
+.btn-ghost{background:#fff;color:var(--navy);border:1.5px solid var(--line)}.btn-ghost:hover{border-color:var(--teal)}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-sm{padding:7px 12px;font-size:.88rem}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;margin:-34px -40px 28px;padding:40px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 60%,var(--teal) 130%);color:#fff;border-radius:var(--r) var(--r) 0 0}
+.hero h1{color:#fff;font-size:2.2rem}
+.hero p{color:#dbe7f1}
+.hero .kicker{font-family:Lexend,system-ui,sans-serif;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:#ffb48f;margin-bottom:8px}
+.hero-art{background:rgba(255,255,255,.08);border-radius:16px;padding:14px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:1px solid var(--line);border-radius:12px;padding:18px;background:#fff}
+.card h3{margin-top:0}
+.obj{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+.obj .num{flex:none;width:34px;height:34px;border-radius:10px;background:var(--orange);color:#fff;font-family:Lexend,system-ui,sans-serif;font-weight:700;display:grid;place-items:center}
+.callout{border-left:5px solid var(--teal);background:var(--teal-soft);padding:14px 18px;border-radius:0 12px 12px 0;margin:18px 0}
+.callout.warn{border-color:var(--orange);background:var(--orange-soft)}
+.callout strong:first-child{color:var(--navy)}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0 0 1em}
+.steps li{counter-increment:s;position:relative;padding:4px 0 12px 46px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:2px;width:32px;height:32px;border-radius:50%;background:var(--orange);color:#fff;font-weight:700;display:grid;place-items:center;font-family:Lexend}
+kbd,.ui{font-family:inherit;font-weight:700;background:#eef2f6;border:1px solid #cfd8e1;border-bottom-width:2px;border-radius:6px;padding:0 6px;font-size:.92em;white-space:nowrap}
+figure{margin:18px 0}
+figure .shot{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 6px 18px rgba(23,48,75,.08)}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-size:.88rem;color:var(--muted);margin-top:8px}
+.time{font-size:.85rem;color:var(--muted)}
+.listen{margin-left:auto}
+.tts-note{font-size:.82rem;color:var(--muted)}
+
+/* demo player */
+.player{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0f1d2e}
+.stage{position:relative;background:#fff}
+.stage .scene{display:none}.stage .scene.on{display:block}
+.cursor{position:absolute;width:26px;height:26px;transition:left .9s cubic-bezier(.5,0,.2,1),top .9s cubic-bezier(.5,0,.2,1);pointer-events:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));z-index:3}
+.ripple{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid var(--orange);opacity:0;pointer-events:none;z-index:2}
+.ripple.go{animation:rip .7s ease-out}
+@keyframes rip{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(1.4)}}
+.caption{background:#0f1d2e;color:#fff;padding:12px 16px;min-height:56px;font-size:.98rem}
+.controls{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#16283d;color:#cfe0ee}
+.controls button{background:#fff;color:var(--navy);border:none;border-radius:8px;padding:6px 12px;font-weight:700;cursor:pointer}
+.pdots{display:flex;gap:6px;margin-left:auto}
+.pdots span{width:9px;height:9px;border-radius:50%;background:#45607c}.pdots span.on{background:var(--orange)}
+
+/* activities */
+.activity{border:2px solid var(--teal);border-radius:16px;padding:22px;margin:22px 0;background:linear-gradient(180deg,#fff, #fbfefe)}
+.activity>h3:first-child,.activity>.act-head{margin-top:0}
+.act-head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.act-head h3{margin:0}
+.feedback{margin-top:12px;padding:12px 14px;border-radius:10px;display:none}
+.feedback.show{display:block}
+.feedback.good{background:var(--good-soft);color:var(--good);border:1px solid #b7dfc3}
+.feedback.bad{background:var(--bad-soft);color:var(--bad);border:1px solid #f3c1bb}
+.feedback.info{background:var(--teal-soft);color:var(--navy);border:1px solid #bfe2e4}
+
+.hot-wrap{position:relative}
+.hot{position:absolute;background:transparent;border:2px dashed transparent;border-radius:8px;cursor:pointer}
+.hot:hover,.hot:focus-visible{border-color:var(--orange);background:rgba(224,96,42,.08)}
+.hot.correct{border:3px solid var(--good);background:rgba(31,122,61,.12)}
+.hot-task{font-weight:700;color:var(--navy);margin:8px 0}
+
+.match-row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff}
+.match-row .choices{display:flex;gap:8px}
+.choice{border:1.5px solid var(--line);background:#fff;border-radius:9px;padding:7px 12px;cursor:pointer;font-weight:700;color:var(--navy)}
+.choice[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.match-row.ok{border-color:#9fd3b0;background:var(--good-soft)}
+.match-row.no{border-color:#f0b4ad;background:var(--bad-soft)}
+.match-row .why{grid-column:1/-1;font-size:.9rem;display:none}
+.match-row.ok .why,.match-row.no .why{display:block}
+
+.checklist{list-style:none;padding:0;margin:0}
+.checklist li{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fff}
+.checklist input{width:22px;height:22px;margin-top:2px;accent-color:var(--good);flex:none}
+.checklist li.checked{background:var(--good-soft);border-color:#b7dfc3}
+
+.order-list{list-style:none;padding:0;margin:0}
+.order-list li{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fff}
+.order-list li .n{width:28px;height:28px;border-radius:8px;background:var(--teal-soft);color:var(--teal);font-weight:700;display:grid;place-items:center;flex:none}
+.order-list li .t{flex:1}
+.order-list li button{border:1px solid var(--line);background:#fff;border-radius:7px;width:34px;height:30px;cursor:pointer;font-size:1rem}
+.order-list li.ok{background:var(--good-soft);border-color:#b7dfc3}
+.order-list li.no{background:var(--bad-soft);border-color:#f3c1bb}
+
+.field{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.field input[type=text],.field select{padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;min-width:260px;background:#fff}
+.field input[type=text]:focus,.field select:focus{border-color:var(--teal);outline:none}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.flip{perspective:900px;height:170px;border:none;background:none;padding:0;cursor:pointer;text-align:center}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}
+.flip[aria-pressed="true"] .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;border-radius:14px;display:grid;place-items:center;padding:14px;backface-visibility:hidden}
+.flip .f{background:var(--navy);color:#fff;font-family:Lexend,system-ui,sans-serif;font-weight:600;font-size:1.05rem}
+.flip .f small{display:block;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-weight:400;font-size:.75rem;opacity:.7;margin-top:6px}
+.flip .b{background:var(--teal-soft);color:var(--navy);transform:rotateY(180deg);font-size:.9rem;line-height:1.4;border:1px solid #bfe2e4}
+
+/* quiz */
+.q{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px;background:#fff}
+.q legend{font-weight:700;color:var(--navy);padding:0}
+.q fieldset{border:none;margin:0;padding:0}
+.q label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:9px;cursor:pointer;margin-top:4px}
+.q label:hover{background:var(--bg)}
+.q input{margin-top:5px;accent-color:var(--teal)}
+.q .qfb{display:none;margin-top:8px;font-size:.92rem;padding:10px 12px;border-radius:9px}
+.q.ok{border-color:#9fd3b0}.q.ok .qfb{display:block;background:var(--good-soft);color:var(--good)}
+.q.no{border-color:#f0b4ad}.q.no .qfb{display:block;background:var(--bad-soft);color:var(--bad)}
+.qtag{font-size:.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em}
+.result{border-radius:16px;padding:24px;text-align:center;display:none;margin-top:18px}
+.result.show{display:block}
+.result.pass{background:var(--good-soft);border:2px solid #9fd3b0}
+.result.fail{background:var(--orange-soft);border:2px solid #f6c3a8}
+.result .score{font-family:Lexend,system-ui,sans-serif;font-size:2.6rem;font-weight:700;color:var(--navy)}
+.cert{border:3px double var(--navy);border-radius:12px;padding:20px;background:#fff;margin-top:14px;text-align:center}
+
+table.simple{width:100%;border-collapse:collapse;margin:12px 0;font-size:.95rem}
+table.simple th,table.simple td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+table.simple th{background:var(--bg);color:var(--navy)}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;padding:14px 10px 40px}
+  nav.side{display:none;position:static}
+  nav.side.open{display:block}
+  .menu-btn{display:inline-block}
+  .progress-bar{width:70px}
+  section.page{padding:24px 18px}
+  .hero{grid-template-columns:1fr;margin:-24px -18px 22px;padding:26px 20px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr 1fr}
+  .match-row{grid-template-columns:1fr}
+  .brand small{display:none}
+}
+@media (max-width:480px){.progress-bar{display:none}.brand>span:last-child{font-size:.9rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to lesson content</a>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sideNav">☰ Menu</button>
+  <a class="brand" href="#home">
+    <span class="brand-badge" aria-hidden="true">
+      <svg width="22" height="16" viewBox="0 0 44 30"><path d="M35 12a10 10 0 0 0-19-3 8 8 0 0 0-8 13H35a7 7 0 0 0 0-10z" fill="#fff"/></svg>
+    </span>
+    <span>OneDrive Step-by-Step<small>A self-paced guide for UTRGV students</small></span>
+  </a>
+  <span class="spacer"></span>
+  <div class="progress-wrap" aria-live="polite">
+    <span id="progText">0% complete</span>
+    <div class="progress-bar" aria-hidden="true"><span id="progFill"></span></div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="side" id="sideNav" aria-label="Module navigation">
+    <h2>Module menu</h2>
+    <ol id="navList"></ol>
+    <div class="side-foot">Self-paced · about 56 minutes<br>You can leave and come back to any page using this menu.</div>
+  </nav>
+
+  <main id="content" tabindex="-1">
+
+<!-- ================= HOME / WELCOME ================= -->
+<section class="page" id="p-home" data-title="Welcome &amp; Objectives">
+  <div class="hero">
+    <div>
+      <div class="kicker">Self-paced training module</div>
+      <h1>Microsoft OneDrive: A Step-by-Step Guide for UTRGV Students</h1>
+      <p>Stop emailing "final_FINAL_v3.docx" back and forth. Learn to create, share, and work together on one document with the Microsoft 365 account you already have as a UTRGV student.</p>
+      <a class="btn btn-orange" href="#lesson-1">Start Lesson 1 →</a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 320 210">
+        <rect x="18" y="40" width="74" height="92" rx="8" fill="#fff" opacity=".95"/><rect x="30" y="58" width="50" height="6" rx="3" fill="#9fb3c8"/><rect x="30" y="72" width="40" height="6" rx="3" fill="#9fb3c8"/><text x="55" y="118" text-anchor="middle" font-size="10" fill="#B42318" font-family="sans-serif" font-weight="700">v1.docx</text>
+        <rect x="26" y="132" width="74" height="60" rx="8" fill="#fff" opacity=".7"/><text x="63" y="170" text-anchor="middle" font-size="9" fill="#B42318" font-family="sans-serif" font-weight="700">FINAL_v3</text>
+        <path d="M108 110 h46" stroke="#ffb48f" stroke-width="4" stroke-dasharray="6 6"/><path d="M150 100 l14 10 -14 10z" fill="#ffb48f"/>
+        <path d="M262 92a30 30 0 0 0-57-9 24 24 0 0 0-24 39h81a21 21 0 0 0 0-30z" fill="#fff"/>
+        <rect x="205" y="96" width="34" height="42" rx="5" fill="#2B579A"/><text x="222" y="123" text-anchor="middle" font-size="18" fill="#fff" font-family="sans-serif" font-weight="700">W</text>
+        <circle cx="196" cy="158" r="13" fill="#E0602A"/><circle cx="228" cy="164" r="13" fill="#0E7C86"/><circle cx="260" cy="158" r="13" fill="#ffb48f"/>
+        <text x="228" y="196" text-anchor="middle" font-size="11" fill="#fff" font-family="sans-serif">one file · everyone</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="crumb"><span class="pill">Introduction</span><span class="time">⏱ About 5 minutes</span>
+    <button class="btn btn-ghost btn-sm listen" data-listen="p-home">🔊 Listen to this page</button></div>
+
+  <div class="narrate">
+  <h2 style="margin-top:.4em">Why this matters for your classes</h2>
+  <p>Picture this: it's 10:45 p.m., your group project is due at midnight, and three people have three different versions of the same paper in their email. Somebody's edits get lost, and the link you send your professor says <em>"You need permission."</em></p>
+  <p>OneDrive fixes this. It is cloud storage that comes with your <strong>UTRGV Microsoft 365 account</strong>. Your files are saved online automatically, you can open them from any computer on or off campus, and your whole group can work in the <strong>same document at the same time</strong>.</p>
+  </div>
+
+  <h2>What you will be able to do</h2>
+  <p>By the end of this module, you will be able to create, organize, and collaborate on Word documents in OneDrive for your coursework without step-by-step help.</p>
+  <div class="obj"><span class="num">1</span><div><strong>Create &amp; save.</strong> Given access to Microsoft 365 and a practice assignment, create a Word document and save it with a recognizable filename in OneDrive.</div></div>
+  <div class="obj"><span class="num">2</span><div><strong>Share with the right permission.</strong> Given a practice document and a designated recipient, share the file with that person and choose the requested <span class="ui">Can view</span> or <span class="ui">Can edit</span> permission.</div></div>
+  <div class="obj"><span class="num">3</span><div><strong>Edit, comment &amp; find.</strong> Given a shared practice document, add a relevant comment, make an edit, and locate the updated file in OneDrive.</div></div>
+
+  <h2>How this module works</h2>
+  <div class="grid3">
+    <div class="card"><h3>🧭 Move at your own pace</h3><p>Use the <strong>Module menu</strong> on the left (or <span class="ui">☰ Menu</span> on a phone) and the <strong>Next / Back</strong> buttons at the bottom of every page. Completed pages get a green check.</p></div>
+    <div class="card"><h3>🖼️ Watch, then try</h3><p>Each lesson has numbered screenshots, an animated demo or audio, and a practice activity with instant feedback. Retry anything as many times as you like.</p></div>
+    <div class="card"><h3>✅ Finish strong</h3><p>The module ends with a summary, flashcards, and a final assessment: a hands-on checklist plus a 10-question quiz. Passing score: 80%.</p></div>
+  </div>
+
+  <h3>Before you start, have ready:</h3>
+  <ul class="checklist" data-key="ready">
+    <li><input type="checkbox" id="r1"><label for="r1">A computer or laptop with internet and a modern browser (Chrome, Edge, Firefox, or Safari)</label></li>
+    <li><input type="checkbox" id="r2"><label for="r2">Your UTRGV email and password to sign in to Microsoft 365 at <strong>microsoft365.com</strong></label></li>
+    <li><input type="checkbox" id="r3"><label for="r3">A classmate or friend's UTRGV email to use as your practice "teammate" (anyone who doesn't mind getting a practice file)</label></li>
+  </ul>
+  <div class="callout"><strong>Privacy note:</strong> All practice files in this module use made-up assignment information. You never need to upload real grades, student IDs, or personal records.</div>
+  <p class="tts-note">Microsoft updates OneDrive often, so button names or colors on your screen may look slightly different from the screenshots. The steps stay the same.</p>
+</section>
+
+<!-- ================= LESSON 1 ================= -->
+<section class="page" id="p-lesson-1" data-title="Lesson 1: Create &amp; Save">
+  <div class="crumb"><span class="pill">Lesson 1 of 3</span><span class="pill orange">Objective 1</span><span class="time">⏱ About 12 minutes</span>
+    <button class="btn btn-ghost btn-sm listen" data-listen="p-lesson-1">🔊 Listen</button></div>
+  <h1>Create and save a Word document in OneDrive</h1>
+  <p class="lead narrate">In this lesson you'll open OneDrive, create a new Word document, give it a name you'll recognize later, and find it again. There is no "Save" button to worry about: Word for the web saves your work automatically.</p>
+
+  <h2>Watch the demo</h2>
+  <p>Press <strong>Play</strong> to watch the steps animate one at a time. Captions appear under the screen.</p>
+  <div class="player" id="demo1">
+    <div class="stage">
+      <div class="scene" data-scene="od"></div>
+      <div class="scene" data-scene="menu"></div>
+      <div class="scene" data-scene="word"></div>
+      <div class="scene" data-scene="files"></div>
+      <svg class="cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#fff" stroke="#111" stroke-width="1.5"/></svg>
+      <div class="ripple"></div>
+    </div>
+    <div class="caption" aria-live="polite">Press Play to start the demonstration.</div>
+    <div class="controls">
+      <button class="pbtn" type="button">▶ Play</button>
+      <button class="prev" type="button" aria-label="Previous step">◀</button>
+      <button class="next" type="button" aria-label="Next step">▶▶</button>
+      <div class="pdots" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <h2>Step by step</h2>
+  <div class="narrate">
+  <ol class="steps">
+    <li><strong>Sign in.</strong> Go to <strong>microsoft365.com</strong> and sign in with your UTRGV email and password. Then click the <span class="ui">OneDrive</span> icon in the app list on the left.</li>
+    <li><strong>Create a new file.</strong> Click <span class="ui">+ Create or upload</span> (on some screens it says <span class="ui">+ Add new</span>), then choose <span class="ui">Word document</span>.</li>
+    <li><strong>Name it right away.</strong> Word for the web opens a file called <em>Document</em> or <em>Document1</em>. Click that name at the top of the window and type a name you'll recognize, then press <kbd>Enter</kbd>.</li>
+    <li><strong>Type your content.</strong> Watch for the word <span class="ui">Saved</span> next to the file name. That means OneDrive saved your work.</li>
+    <li><strong>Find it again.</strong> Go back to OneDrive and click <span class="ui">My files</span>. Your document is in the list, with the time you last changed it.</li>
+  </ol>
+  </div>
+
+  <figure>
+    <div class="shot" data-svg="od"></div>
+    <figcaption>Figure 1. OneDrive home. ① Click <strong>Create or upload</strong>. Your files live under <strong>My files</strong>.</figcaption>
+  </figure>
+  <figure>
+    <div class="shot" data-svg="word"></div>
+    <figcaption>Figure 2. Word for the web. ③ Click the file name to rename it. ④ "Saved" confirms AutoSave worked.</figcaption>
+  </figure>
+
+  <h2>Name files so you (and your professor) can find them</h2>
+  <p class="narrate">"Document1" tells nobody anything. A good filename answers three questions: <strong>which class, which assignment, and whose</strong>. Use a pattern and stick with it.</p>
+  <table class="simple">
+    <thead><tr><th>❌ Hard to find</th><th>✅ Easy to find</th></tr></thead>
+    <tbody>
+      <tr><td>Document1.docx</td><td>EDTC3332_ClassNotes_Week9.docx</td></tr>
+      <tr><td>paper final FINAL.docx</td><td>ENGL1301_Essay2_Garza.docx</td></tr>
+      <tr><td>group thing.docx</td><td>BIOL1406_Group Project Notes.docx</td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn"><strong>Avoid these characters in filenames:</strong> <code>/ \ : * ? " &lt; &gt; |</code> They can cause upload and sharing errors.</div>
+
+  <div class="pager"><a class="btn btn-ghost" href="#home">← Back: Welcome</a><a class="btn btn-primary" href="#practice-1">Next: Practice 1 →</a></div>
+</section>
+
+<!-- ================= PRACTICE 1 ================= -->
+<section class="page" id="p-practice-1" data-title="Practice 1: Create a Class-Notes File">
+  <div class="crumb"><span class="pill">Practice 1</span><span class="pill orange">Objective 1</span><span class="time">⏱ About 8 minutes</span></div>
+  <h1>Practice: Create a class-notes file</h1>
+  <p class="lead">First try the steps in a safe simulation, then do the real thing in your own OneDrive.</p>
+
+  <div class="activity" id="sim1">
+    <div class="act-head"><span class="pill">Interactive 1</span><h3>Click-through simulation</h3></div>
+    <p>Click the correct spot on the screen for each step. You can use <kbd>Tab</kbd> and <kbd>Enter</kbd> instead of a mouse.</p>
+    <p class="hot-task" aria-live="polite" id="sim1Task"></p>
+    <div class="hot-wrap shot" id="sim1Stage"></div>
+    <div class="feedback" id="sim1Fb" role="status"></div>
+    <button class="btn btn-ghost btn-sm" type="button" id="sim1Reset" style="margin-top:10px">↺ Restart simulation</button>
+  </div>
+
+  <div class="activity">
+    <div class="act-head"><span class="pill">Interactive 2</span><h3>Filename checker</h3></div>
+    <p>Type the name you would give a notes file for one of your classes. The checker tells you whether a classmate (or you, three weeks from now) could find it.</p>
+    <div class="field">
+      <label for="fname" class="sr">Filename</label>
+      <input type="text" id="fname" placeholder="e.g., EDTC3332_ClassNotes_Week9" autocomplete="off">
+      <button class="btn btn-primary btn-sm" type="button" id="fnameBtn">Check my filename</button>
+    </div>
+    <div class="feedback" id="fnameFb" role="status"></div>
+  </div>
+
+  <div class="activity">
+    <div class="act-head"><span class="pill orange">Hands-on</span><h3>Now do it for real</h3></div>
+    <p>Open <strong>microsoft365.com</strong> in a new tab and complete each task. Check off each one as you finish.</p>
+    <ul class="checklist" data-key="p1" data-done="Nice work! You created and saved your first OneDrive document. Objective 1 practice complete.">
+      <li><input type="checkbox" id="p1a"><label for="p1a">I signed in with my UTRGV account and opened OneDrive.</label></li>
+      <li><input type="checkbox" id="p1b"><label for="p1b">I created a new Word document using <strong>Create or upload → Word document</strong>.</label></li>
+      <li><input type="checkbox" id="p1c"><label for="p1c">I renamed it with a clear pattern, like <em>COURSE_ClassNotes_Week#</em>.</label></li>
+      <li><input type="checkbox" id="p1d"><label for="p1d">I typed at least one sentence and saw the word <strong>Saved</strong>.</label></li>
+      <li><input type="checkbox" id="p1e"><label for="p1e">I returned to <strong>My files</strong> and found my document in the list.</label></li>
+    </ul>
+    <div class="feedback" role="status"></div>
+  </div>
+
+  <div class="pager"><a class="btn btn-ghost" href="#lesson-1">← Back: Lesson 1</a><a class="btn btn-primary" href="#lesson-2">Next: Lesson 2 →</a></div>
+</section>
+
+<!-- ================= LESSON 2 ================= -->
+<section class="page" id="p-lesson-2" data-title="Lesson 2: Share &amp; Permissions">
+  <div class="crumb"><span class="pill">Lesson 2 of 3</span><span class="pill orange">Objective 2</span><span class="time">⏱ About 12 minutes</span>
+    <button class="btn btn-ghost btn-sm listen" data-listen="p-lesson-2">🔊 Listen</button></div>
+  <h1>Share a file and choose the right permission</h1>
+  <p class="lead narrate">Sharing sends one link to the same file. Nobody gets a copy, so everyone sees the latest version. The most important decision is the permission: can the other person only look, or can they change things?</p>
+
+  <h2>Can view vs. Can edit</h2>
+  <div class="grid2 narrate">
+    <div class="card"><h3>👁️ Can view</h3><p>They can open and read the file but <strong>cannot change it</strong>.</p><p><strong>Use it for:</strong> turning in a link to your professor, sharing finished notes, sending a study guide to classmates.</p></div>
+    <div class="card"><h3>✏️ Can edit</h3><p>They can type, delete, comment, and share the file further.</p><p><strong>Use it for:</strong> teammates on a group project, a lab partner, a tutor helping you revise.</p></div>
+  </div>
+  <div class="callout warn"><strong>Rule of thumb:</strong> give the <em>least</em> access someone needs. If they only need to read it, choose <span class="ui">Can view</span>. You can always change it later.</div>
+
+  <h2>Step by step</h2>
+  <div class="narrate">
+  <ol class="steps">
+    <li><strong>Open the share window.</strong> In Word for the web, click <span class="ui">Share</span> in the top-right corner. In OneDrive, you can also select the file and click <span class="ui">Share</span>.</li>
+    <li><strong>Add the person.</strong> Type their UTRGV name or email in <em>Add a name, group, or email</em> and pick them from the list.</li>
+    <li><strong>Set the permission.</strong> Click the pencil or eye icon next to the name box and choose <span class="ui">Can edit</span> or <span class="ui">Can view</span>.</li>
+    <li><strong>Add a short message</strong> (optional), like "Here are our notes for the group project."</li>
+    <li><strong>Click Send.</strong> They get an email with the link, and the file shows up under <span class="ui">Shared</span> in their OneDrive.</li>
+  </ol>
+  </div>
+
+  <figure>
+    <div class="shot" data-svg="share"></div>
+    <figcaption>Figure 3. The Share window. ① Add the person. ② Choose Can edit or Can view. ③ Send. Or ④ Copy link to paste the link into Blackboard, Teams, or an email.</figcaption>
+  </figure>
+
+  <h2>Turning in a link to a professor? Read this first.</h2>
+  <div class="callout narrate"><strong>Why "You need permission" happens:</strong> the link only works for the people its settings allow. Before you submit a OneDrive link for an assignment:
+    <ol style="margin:.6em 0 0">
+      <li>Use <span class="ui">Copy link</span> and check the setting shown above it (for example, <em>"People in your organization"</em> or <em>"People you choose"</em>). Change it if your professor can't open it.</li>
+      <li>Choose <span class="ui">Can view</span> unless your instructor asks for edit access.</li>
+      <li>Test the link in a private or incognito browser window before you submit.</li>
+    </ol>
+  </div>
+  <p class="tts-note">Some sharing options, like "Anyone with the link," may be turned off for university accounts. That's normal. Use the options your account allows.</p>
+
+  <h2>Optional video</h2>
+  <p>Want to see sharing from Microsoft itself? Watch the short <a href="https://support.microsoft.com/en-us/office/onedrive-video-training-1f608184-b7e6-43ca-8753-2ff679203132" target="_blank" rel="noopener">"Share and collaborate with OneDrive" video on Microsoft Support</a> (opens in a new tab, captions available).</p>
+
+  <div class="pager"><a class="btn btn-ghost" href="#practice-1">← Back: Practice 1</a><a class="btn btn-primary" href="#practice-2">Next: Practice 2 →</a></div>
+</section>
+
+<!-- ================= PRACTICE 2 ================= -->
+<section class="page" id="p-practice-2" data-title="Practice 2: Pick the Right Permission">
+  <div class="crumb"><span class="pill">Practice 2</span><span class="pill orange">Objective 2</span><span class="time">⏱ About 8 minutes</span></div>
+  <h1>Practice: Identify and apply the right permission</h1>
+
+  <div class="activity" id="match">
+    <div class="act-head"><span class="pill">Interactive 3</span><h3>Match each scenario: Can view or Can edit?</h3></div>
+    <p>Choose a permission for each situation. You'll see feedback right away.</p>
+    <div id="matchRows"></div>
+    <div class="feedback" id="matchFb" role="status"></div>
+    <button class="btn btn-ghost btn-sm" type="button" id="matchReset">↺ Try again</button>
+  </div>
+
+  <div class="activity">
+    <div class="act-head"><span class="pill">Interactive 4</span><h3>Share it right</h3></div>
+    <p><strong>Your request:</strong> <em>"Hi! It's Alex from your EDTC 3332 group. Can you share our <strong>Group Project Notes</strong> so I can add my section tonight?"</em></p>
+    <p>Fill in the share window the way you would for Alex.</p>
+    <div class="shot" style="padding:18px;max-width:560px;border-radius:12px">
+      <div style="font-family:Lexend,system-ui,sans-serif;font-weight:600;color:var(--navy);margin-bottom:10px">Share "Group Project Notes"</div>
+      <div class="field" style="margin-bottom:10px">
+        <label for="shareTo" style="min-width:110px">Share with</label>
+        <select id="shareTo"><option value="">Add a name, group, or email…</option><option value="prof">Dr. Watkins (instructor)</option><option value="alex">Alex Garza (group member)</option><option value="all">Entire class list</option></select>
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label for="sharePerm" style="min-width:110px">Permission</label>
+        <select id="sharePerm"><option value="">Choose…</option><option value="view">Can view</option><option value="edit">Can edit</option></select>
+      </div>
+      <button class="btn btn-primary btn-sm" type="button" id="shareBtn">Send</button>
+    </div>
+    <div class="feedback" id="shareFb" role="status"></div>
+  </div>
+
+  <div class="activity">
+    <div class="act-head"><span class="pill orange">Hands-on</span><h3>Now do it for real</h3></div>
+    <ul class="checklist" data-key="p2" data-done="Great! You shared a real file with the right permission. Objective 2 practice complete.">
+      <li><input type="checkbox" id="p2a"><label for="p2a">I opened the class-notes file from Practice 1 and clicked <strong>Share</strong>.</label></li>
+      <li><input type="checkbox" id="p2b"><label for="p2b">I added my practice teammate's UTRGV email.</label></li>
+      <li><input type="checkbox" id="p2c"><label for="p2c">I chose <strong>Can edit</strong>, because a teammate needs to add to class notes.</label></li>
+      <li><input type="checkbox" id="p2d"><label for="p2d">I clicked <strong>Send</strong> and my teammate confirmed they got it (or I saw it listed under <em>Manage access</em>).</label></li>
+    </ul>
+    <div class="feedback" role="status"></div>
+  </div>
+
+  <div class="pager"><a class="btn btn-ghost" href="#lesson-2">← Back: Lesson 2</a><a class="btn btn-primary" href="#lesson-3">Next: Lesson 3 →</a></div>
+</section>
+
+<!-- ================= LESSON 3 ================= -->
+<section class="page" id="p-lesson-3" data-title="Lesson 3: Edit, Comment &amp; Reopen">
+  <div class="crumb"><span class="pill">Lesson 3 of 3</span><span class="pill orange">Objective 3</span><span class="time">⏱ About 12 minutes</span>
+    <button class="btn btn-ghost btn-sm listen" data-listen="p-lesson-3">🔊 Listen</button></div>
+  <h1>Edit, comment, and reopen a shared file</h1>
+  <p class="lead narrate">Once a file is shared, your group can work in it at the same time. You'll see each other's colored cursors as you type. Comments let you give feedback without changing someone else's writing.</p>
+
+  <h2>Edit together</h2>
+  <div class="narrate">
+  <ol class="steps">
+    <li><strong>Open the shared file.</strong> In OneDrive, click <span class="ui">Shared</span> on the left, or open the link from your email.</li>
+    <li><strong>Make your edit.</strong> Click where you want to change the text and type. Your changes save automatically, and teammates see them within seconds.</li>
+  </ol>
+  </div>
+
+  <h2>Leave a comment</h2>
+  <div class="narrate">
+  <ol class="steps" style="counter-reset:s 2">
+    <li><strong>Highlight the text</strong> you want to comment on.</li>
+    <li>Click <span class="ui">Review</span> → <span class="ui">New Comment</span> (or right-click and choose <span class="ui">New Comment</span>).</li>
+    <li><strong>Type helpful feedback.</strong> To notify a teammate, type <kbd>@</kbd> and their name, for example <em>"@Alex can you add a source here?"</em> They'll get an email.</li>
+    <li>Click the <strong>send arrow</strong> to post it. When the issue is fixed, mark the comment <span class="ui">Resolve</span>.</li>
+  </ol>
+  </div>
+  <figure>
+    <div class="shot" data-svg="comment"></div>
+    <figcaption>Figure 4. ① Highlight text. ② Review → New Comment. ③ Type feedback with an @mention, then post.</figcaption>
+  </figure>
+
+  <h2>Find the updated file later</h2>
+  <div class="grid3 narrate">
+    <div class="card"><h3>🕘 Recent</h3><p>Files you opened lately, including ones other people own. The fastest place to look.</p></div>
+    <div class="card"><h3>👥 Shared</h3><p>Files others shared <em>with</em> you, plus files you shared with others.</p></div>
+    <div class="card"><h3>⏪ Version history</h3><p>In Word for the web: <span class="ui">File</span> → <span class="ui">Info</span> → <span class="ui">Version History</span>. Lets you see or restore older versions if something gets deleted.</p></div>
+  </div>
+  <div class="callout"><strong>Good comment vs. not-so-good comment:</strong><br>✅ "@Alex this paragraph needs a citation. Can you add the article we found?"<br>❌ "fix this"</div>
+
+  <div class="pager"><a class="btn btn-ghost" href="#practice-2">← Back: Practice 2</a><a class="btn btn-primary" href="#practice-3">Next: Practice 3 →</a></div>
+</section>
+
+<!-- ================= PRACTICE 3 ================= -->
+<section class="page" id="p-practice-3" data-title="Practice 3: Revise &amp; Give Feedback">
+  <div class="crumb"><span class="pill">Practice 3</span><span class="pill orange">Objective 3</span><span class="time">⏱ About 8 minutes</span></div>
+  <h1>Practice: Make a revision and leave feedback</h1>
+
+  <div class="activity" id="orderAct">
+    <div class="act-head"><span class="pill">Interactive 5</span><h3>Put the steps in order</h3></div>
+    <p>Your teammate shared a document and asked for feedback on the introduction. Use the ▲ ▼ buttons to put these steps in the correct order, then check your answer.</p>
+    <ol class="order-list" id="orderList"></ol>
+    <button class="btn btn-primary btn-sm" type="button" id="orderBtn">Check order</button>
+    <button class="btn btn-ghost btn-sm" type="button" id="orderShuffle">↺ Shuffle</button>
+    <div class="feedback" id="orderFb" role="status"></div>
+  </div>
+
+  <div class="activity">
+    <div class="act-head"><span class="pill">Interactive 6</span><h3>Which comment is most helpful?</h3></div>
+    <p>A teammate's draft says: <em>"Online storage is good for students."</em> Pick the best comment to leave.</p>
+    <div id="cmtChoices" role="radiogroup" aria-label="Comment choices"></div>
+    <div class="feedback" id="cmtFb" role="status"></div>
+  </div>
+
+  <div class="activity">
+    <div class="act-head"><span class="pill orange">Hands-on</span><h3>Guided OneDrive task: check your results</h3></div>
+    <p>Ask your practice teammate to open your shared class-notes file (or open a file they shared with you) and complete these steps.</p>
+    <ul class="checklist" data-key="p3" data-done="Excellent! You edited, commented, and found the updated file. Objective 3 practice complete.">
+      <li><input type="checkbox" id="p3a"><label for="p3a">I opened the shared document from <strong>Shared</strong> or the email link.</label></li>
+      <li><input type="checkbox" id="p3b"><label for="p3b">I revised one sentence, and the change saved.</label></li>
+      <li><input type="checkbox" id="p3c"><label for="p3c">I added one helpful comment with an <strong>@mention</strong>.</label></li>
+      <li><input type="checkbox" id="p3d"><label for="p3d">I closed the file, then reopened it from <strong>Recent</strong> or <strong>Shared</strong> and saw my edit and comment.</label></li>
+    </ul>
+    <div class="feedback" role="status"></div>
+  </div>
+
+  <div class="pager"><a class="btn btn-ghost" href="#lesson-3">← Back: Lesson 3</a><a class="btn btn-primary" href="#summary">Next: Summary →</a></div>
+</section>
+
+<!-- ================= SUMMARY ================= -->
+<section class="page" id="p-summary" data-title="Summary &amp; Review">
+  <div class="crumb"><span class="pill">Review</span><span class="time">⏱ About 5 minutes</span>
+    <button class="btn btn-ghost btn-sm listen" data-listen="p-summary">🔊 Listen</button></div>
+  <h1>Summary: Your OneDrive workflow</h1>
+  <p class="lead narrate">You learned one workflow you can reuse for every class: <strong>create</strong> a file with a clear name, <strong>share</strong> it with the right permission, and <strong>collaborate</strong> with edits and comments, all in one file that is always up to date.</p>
+
+  <figure>
+    <div class="shot" style="padding:18px">
+      <svg viewBox="0 0 720 150" role="img" aria-label="Workflow: Create and name, then Share and choose permission, then Edit and comment, then Find in Recent or Shared">
+        <g font-family="Lexend, sans-serif" text-anchor="middle">
+          <rect x="10" y="30" width="150" height="90" rx="14" fill="#17304B"/><text x="85" y="68" fill="#fff" font-size="16" font-weight="600">1. Create</text><text x="85" y="92" fill="#cfe0ee" font-size="12">name it clearly</text>
+          <path d="M168 75h22" stroke="#E0602A" stroke-width="4"/><path d="M188 66l12 9-12 9z" fill="#E0602A"/>
+          <rect x="205" y="30" width="150" height="90" rx="14" fill="#0E7C86"/><text x="280" y="68" fill="#fff" font-size="16" font-weight="600">2. Share</text><text x="280" y="92" fill="#e3f2f3" font-size="12">view or edit?</text>
+          <path d="M363 75h22" stroke="#E0602A" stroke-width="4"/><path d="M383 66l12 9-12 9z" fill="#E0602A"/>
+          <rect x="400" y="30" width="150" height="90" rx="14" fill="#17304B"/><text x="475" y="68" fill="#fff" font-size="16" font-weight="600">3. Collaborate</text><text x="475" y="92" fill="#cfe0ee" font-size="12">edit + @comment</text>
+          <path d="M558 75h22" stroke="#E0602A" stroke-width="4"/><path d="M578 66l12 9-12 9z" fill="#E0602A"/>
+          <rect x="595" y="30" width="115" height="90" rx="14" fill="#E0602A"/><text x="652" y="68" fill="#fff" font-size="16" font-weight="600">4. Find</text><text x="652" y="92" fill="#fff" font-size="12">Recent · Shared</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>Figure 5. The four-step workflow you'll use for every class project.</figcaption>
+  </figure>
+
+  <h2>Key takeaways</h2>
+  <ul class="narrate">
+    <li><strong>No more attachments.</strong> Share one link to one file instead of emailing copies.</li>
+    <li><strong>AutoSave is on.</strong> Look for "Saved" next to the file name.</li>
+    <li><strong>Least access wins.</strong> Professors usually get Can view, and teammates get Can edit.</li>
+    <li><strong>Test before you submit.</strong> Open your link in a private window to make sure it works.</li>
+    <li><strong>Comment, don't overwrite.</strong> Use comments and @mentions for feedback on someone else's writing.</li>
+  </ul>
+
+  <div class="activity">
+    <div class="act-head"><span class="pill">Interactive 7</span><h3>Flashcards: key terms</h3></div>
+    <p>Click or press <kbd>Enter</kbd> on a card to flip it.</p>
+    <div class="cards" id="cards"></div>
+  </div>
+
+  <div class="callout">Ready? The final assessment has two parts: a <strong>hands-on checklist</strong> (about 8 minutes) and a <strong>10-question quiz</strong> (about 7 minutes). You can go back to any lesson first using the menu.</div>
+  <div class="pager"><a class="btn btn-ghost" href="#practice-3">← Back: Practice 3</a><a class="btn btn-primary" href="#final-assessment">Next: Final Assessment →</a></div>
+</section>
+
+<!-- ================= FINAL ASSESSMENT ================= -->
+<section class="page" id="p-final-assessment" data-title="Final Assessment">
+  <div class="crumb"><span class="pill">Final Assessment</span><span class="pill orange">Objectives 1–3</span><span class="time">⏱ About 15 minutes</span></div>
+  <h1>Final assessment</h1>
+  <p class="lead">Show what you can do. Part A checks your skills in real OneDrive. Part B checks your understanding of permissions and file organization.</p>
+
+  <h2>Part A: Hands-on performance check</h2>
+  <p>Complete each task in your own OneDrive <em>without looking back at the lessons</em>. Pass requirement: every task completed correctly.</p>
+  <div class="activity" style="border-color:var(--navy)">
+    <h3 style="margin-top:0">Objective 1: Create &amp; save</h3>
+    <ul class="checklist" data-key="fa1">
+      <li><input type="checkbox" id="fa1a"><label for="fa1a">Created a new Word document named exactly <strong>Group Project Notes</strong>.</label></li>
+      <li><input type="checkbox" id="fa1b"><label for="fa1b">Added one sentence and confirmed the file appears in <strong>My files</strong>.</label></li>
+    </ul>
+    <h3>Objective 2: Share with the right permission</h3>
+    <ul class="checklist" data-key="fa2">
+      <li><input type="checkbox" id="fa2a"><label for="fa2a">Shared <em>Group Project Notes</em> with my designated practice teammate.</label></li>
+      <li><input type="checkbox" id="fa2b"><label for="fa2b">Applied the requested permission: <strong>Can edit</strong>.</label></li>
+    </ul>
+    <h3>Objective 3: Edit, comment &amp; find</h3>
+    <ul class="checklist" data-key="fa3">
+      <li><input type="checkbox" id="fa3a"><label for="fa3a">Added one relevant comment to the document.</label></li>
+      <li><input type="checkbox" id="fa3b"><label for="fa3b">Revised one sentence.</label></li>
+      <li><input type="checkbox" id="fa3c"><label for="fa3c">Closed and reopened the updated file from <strong>Recent</strong> or <strong>Shared</strong>.</label></li>
+    </ul>
+    <div class="feedback" id="partAFb" role="status"></div>
+  </div>
+
+  <h2>Part B: Knowledge quiz</h2>
+  <p>10 questions. Passing score: 8 of 10 (80%). You'll get feedback on every question and can retake the quiz.</p>
+  <form id="quiz" novalidate></form>
+  <div class="result" id="quizResult" role="status" aria-live="polite"></div>
+
+  <div class="pager"><a class="btn btn-ghost" href="#summary">← Back: Summary</a><a class="btn btn-primary" href="#home">Return to Welcome ↺</a></div>
+</section>
+
+  </main>
+</div>
+
+<!-- ============ SVG MOCKUP TEMPLATES ============ -->
+<template id="svg-od">
+<svg viewBox="0 0 640 360" role="img" aria-label="Mock OneDrive home screen with a Create or upload button and My files list">
+  <rect width="640" height="360" fill="#fff"/>
+  <rect width="640" height="40" fill="#0F6CBD"/>
+  <text x="18" y="26" fill="#fff" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600">OneDrive</text>
+  <rect x="200" y="9" width="240" height="22" rx="11" fill="#fff" opacity=".9"/><text x="216" y="24" fill="#667" font-size="11" font-family="sans-serif">🔍 Search</text>
+  <circle cx="612" cy="20" r="12" fill="#E0602A"/><text x="612" y="24" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">EL</text>
+  <rect x="0" y="40" width="150" height="320" fill="#F5F7FA"/>
+  <rect x="14" y="56" width="124" height="32" rx="16" fill="#0F6CBD"/><text x="76" y="77" fill="#fff" font-size="12" text-anchor="middle" font-family="sans-serif" font-weight="600">+ Create or upload</text>
+  <g font-family="sans-serif" font-size="12" fill="#334">
+    <text x="24" y="118">🏠  Home</text>
+    <rect x="10" y="130" width="130" height="26" rx="6" fill="#DCE9F7"/><text x="24" y="148" font-weight="700">📁  My files</text>
+    <text x="24" y="178">👥  Shared</text><text x="24" y="206">⭐  Favorites</text><text x="24" y="234">🗑️  Recycle bin</text>
+  </g>
+  <text x="176" y="74" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#223">My files</text>
+  <g font-family="sans-serif" font-size="11" fill="#556">
+    <text x="176" y="104" font-weight="700">Name</text><text x="430" y="104" font-weight="700">Modified</text><text x="540" y="104" font-weight="700">Sharing</text>
+    <line x1="170" y1="112" x2="630" y2="112" stroke="#e3e7ec"/>
+    <text x="176" y="134">📁 Documents</text><text x="430" y="134">Sept 2</text><text x="540" y="134">Private</text>
+    <line x1="170" y1="146" x2="630" y2="146" stroke="#eef1f4"/>
+    <text x="176" y="168">📘 ENGL1301_Essay1_Lucio.docx</text><text x="430" y="168">Oct 3</text><text x="540" y="168">Private</text>
+    <line x1="170" y1="180" x2="630" y2="180" stroke="#eef1f4"/>
+    <text x="176" y="202">📗 BIOL1406_LabData.xlsx</text><text x="430" y="202">Oct 20</text><text x="540" y="202">Shared</text>
+  </g>
+  <g class="badge"><circle cx="146" cy="58" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="146" y="63" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="sans-serif">1</text></g>
+</svg>
+</template>
+
+<template id="svg-menu">
+<svg viewBox="0 0 640 360" role="img" aria-label="Mock OneDrive with the Create menu open showing Word document">
+  <rect width="640" height="360" fill="#fff"/>
+  <rect width="640" height="40" fill="#0F6CBD"/>
+  <text x="18" y="26" fill="#fff" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600">OneDrive</text>
+  <circle cx="612" cy="20" r="12" fill="#E0602A"/><text x="612" y="24" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">EL</text>
+  <rect x="0" y="40" width="150" height="320" fill="#F5F7FA"/>
+  <rect x="14" y="56" width="124" height="32" rx="16" fill="#0F6CBD"/><text x="76" y="77" fill="#fff" font-size="12" text-anchor="middle" font-family="sans-serif" font-weight="600">+ Create or upload</text>
+  <text x="176" y="74" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#ccd">My files</text>
+  <rect x="20" y="94" width="200" height="214" rx="8" fill="#fff" stroke="#d0d7e0"/>
+  <g font-family="sans-serif" font-size="12" fill="#223">
+    <text x="36" y="120">📁  Folder</text>
+    <line x1="28" y1="132" x2="212" y2="132" stroke="#eef1f4"/>
+    <rect x="26" y="138" width="188" height="28" rx="5" fill="#E8F0FB"/><text x="36" y="157" font-weight="700">📘  Word document</text>
+    <text x="36" y="190">📗  Excel workbook</text>
+    <text x="36" y="220">📙  PowerPoint presentation</text>
+    <text x="36" y="250">📝  OneNote notebook</text>
+    <line x1="28" y1="264" x2="212" y2="264" stroke="#eef1f4"/>
+    <text x="36" y="290">⬆️  Files upload</text>
+  </g>
+  <g class="badge"><circle cx="216" cy="152" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="216" y="157" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="sans-serif">2</text></g>
+</svg>
+</template>
+
+<template id="svg-word">
+<svg viewBox="0 0 640 360" role="img" aria-label="Mock Word for the web with the file name and Saved indicator at the top">
+  <rect width="640" height="360" fill="#F3F2F1"/>
+  <rect width="640" height="40" fill="#185ABD"/>
+  <text x="18" y="26" fill="#fff" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600">Word</text>
+  <rect x="70" y="9" width="210" height="22" rx="4" fill="#fff" opacity=".18" stroke="#fff" stroke-opacity=".7"/>
+  <text x="80" y="25" fill="#fff" font-family="sans-serif" font-size="12" class="fname">Document1</text>
+  <text x="204" y="25" fill="#cfe0f7" font-family="sans-serif" font-size="11">• Saved ✓</text>
+  <rect x="540" y="9" width="80" height="22" rx="4" fill="#fff"/><text x="580" y="24" fill="#185ABD" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700">↗ Share</text>
+  <rect y="40" width="640" height="30" fill="#fff"/>
+  <g font-family="sans-serif" font-size="11" fill="#444"><text x="18" y="60">File</text><text x="58" y="60" font-weight="700" fill="#185ABD">Home</text><text x="104" y="60">Insert</text><text x="150" y="60">Layout</text><text x="200" y="60">References</text><text x="270" y="60">Review</text><text x="320" y="60">View</text></g>
+  <rect x="140" y="86" width="360" height="274" fill="#fff" stroke="#e1dfdd"/>
+  <rect x="172" y="118" width="240" height="10" rx="3" fill="#2b2b2b" opacity=".85"/>
+  <rect x="172" y="142" width="296" height="7" rx="3" fill="#bbb"/><rect x="172" y="158" width="280" height="7" rx="3" fill="#bbb"/><rect x="172" y="174" width="210" height="7" rx="3" fill="#bbb"/>
+  <rect x="384" y="171" width="2" height="14" fill="#185ABD"/>
+  <g class="badge"><circle cx="178" cy="20" r="11" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="178" y="25" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="sans-serif">3</text></g>
+  <g class="badge"><circle cx="296" cy="20" r="12" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="296" y="25" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="sans-serif">4</text></g>
+</svg>
+</template>
+
+<template id="svg-files">
+<svg viewBox="0 0 640 360" role="img" aria-label="Mock OneDrive My files list showing the new document at the top">
+  <rect width="640" height="360" fill="#fff"/>
+  <rect width="640" height="40" fill="#0F6CBD"/>
+  <text x="18" y="26" fill="#fff" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600">OneDrive</text>
+  <circle cx="612" cy="20" r="12" fill="#E0602A"/><text x="612" y="24" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">EL</text>
+  <rect x="0" y="40" width="150" height="320" fill="#F5F7FA"/>
+  <rect x="14" y="56" width="124" height="32" rx="16" fill="#0F6CBD"/><text x="76" y="77" fill="#fff" font-size="12" text-anchor="middle" font-family="sans-serif" font-weight="600">+ Create or upload</text>
+  <g font-family="sans-serif" font-size="12" fill="#334">
+    <text x="24" y="118">🏠  Home</text>
+    <rect x="10" y="130" width="130" height="26" rx="6" fill="#DCE9F7"/><text x="24" y="148" font-weight="700">📁  My files</text>
+    <text x="24" y="178">👥  Shared</text><text x="24" y="206">⭐  Favorites</text><text x="24" y="234">🗑️  Recycle bin</text>
+  </g>
+  <text x="176" y="74" font-family="Segoe UI, sans-serif" font-size="18" font-weight="600" fill="#223">My files</text>
+  <g font-family="sans-serif" font-size="11" fill="#556">
+    <text x="176" y="104" font-weight="700">Name</text><text x="430" y="104" font-weight="700">Modified</text><text x="540" y="104" font-weight="700">Sharing</text>
+    <line x1="170" y1="112" x2="630" y2="112" stroke="#e3e7ec"/>
+    <rect x="170" y="117" width="460" height="26" rx="4" fill="#FFF4E5"/>
+    <text x="176" y="134" fill="#223" font-weight="700">📘 EDTC3332_ClassNotes_Week9.docx</text><text x="430" y="134" fill="#223">A few seconds ago</text><text x="540" y="134">Private</text>
+    <line x1="170" y1="146" x2="630" y2="146" stroke="#eef1f4"/>
+    <text x="176" y="168">📁 Documents</text><text x="430" y="168">Sept 2</text><text x="540" y="168">Private</text>
+    <line x1="170" y1="180" x2="630" y2="180" stroke="#eef1f4"/>
+    <text x="176" y="202">📘 ENGL1301_Essay1_Lucio.docx</text><text x="430" y="202">Oct 3</text><text x="540" y="202">Private</text>
+  </g>
+  <g class="badge"><circle cx="164" cy="130" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="164" y="135" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="sans-serif">5</text></g>
+</svg>
+</template>
+
+<template id="svg-share">
+<svg viewBox="0 0 640 360" role="img" aria-label="Mock Share window with a name box, a Can edit permission menu, a Send button and a Copy link button">
+  <rect width="640" height="360" fill="#e9edf2"/>
+  <rect x="150" y="26" width="340" height="308" rx="10" fill="#fff" stroke="#cfd6de"/>
+  <text x="172" y="60" font-family="Segoe UI, sans-serif" font-size="16" font-weight="600" fill="#223">Share "Group Project Notes"</text>
+  <text x="468" y="60" font-family="sans-serif" font-size="14" fill="#889">✕</text>
+  <rect x="172" y="78" width="250" height="34" rx="6" fill="#fff" stroke="#0F6CBD" stroke-width="1.5"/>
+  <text x="182" y="100" font-family="sans-serif" font-size="12" fill="#223">Alex Garza (UTRGV)</text>
+  <rect x="428" y="78" width="42" height="34" rx="6" fill="#F0F4F9" stroke="#cfd6de"/><text x="449" y="100" text-anchor="middle" font-family="sans-serif" font-size="13">✏️▾</text>
+  <rect x="300" y="116" width="170" height="70" rx="6" fill="#fff" stroke="#cfd6de"/>
+  <rect x="304" y="120" width="162" height="28" rx="4" fill="#E8F0FB"/><text x="314" y="139" font-family="sans-serif" font-size="12" fill="#223" font-weight="700">✏️ Can edit</text>
+  <text x="314" y="173" font-family="sans-serif" font-size="12" fill="#223">👁️ Can view</text>
+  <rect x="172" y="198" width="298" height="54" rx="6" fill="#fff" stroke="#cfd6de"/>
+  <text x="182" y="220" font-family="sans-serif" font-size="11" fill="#889">Add a message (optional)</text>
+  <rect x="396" y="262" width="74" height="30" rx="6" fill="#0F6CBD"/><text x="433" y="282" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#fff" font-weight="700">Send</text>
+  <line x1="172" y1="304" x2="470" y2="304" stroke="#eef1f4"/>
+  <text x="172" y="324" font-family="sans-serif" font-size="11" fill="#556">🔗 People in your organization with the link…</text>
+  <rect x="398" y="310" width="72" height="22" rx="5" fill="#F0F4F9" stroke="#cfd6de"/><text x="434" y="325" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6CBD" font-weight="700">Copy link</text>
+  <g font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">
+    <circle cx="164" cy="95" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="164" y="100">1</text>
+    <circle cx="482" cy="134" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="482" y="139">2</text>
+    <circle cx="482" cy="277" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="482" y="282">3</text>
+    <circle cx="482" cy="321" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="482" y="326">4</text>
+  </g>
+</svg>
+</template>
+
+<template id="svg-comment">
+<svg viewBox="0 0 640 360" role="img" aria-label="Mock Word for the web with highlighted text, the Review tab's New Comment button, and a comment card with an @mention">
+  <rect width="640" height="360" fill="#F3F2F1"/>
+  <rect width="640" height="40" fill="#185ABD"/>
+  <text x="18" y="26" fill="#fff" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600">Word</text>
+  <text x="80" y="25" fill="#fff" font-family="sans-serif" font-size="12">Group Project Notes • Saved ✓</text>
+  <rect y="40" width="640" height="56" fill="#fff"/>
+  <g font-family="sans-serif" font-size="11" fill="#444"><text x="18" y="58">File</text><text x="58" y="58">Home</text><text x="104" y="58">Insert</text><text x="150" y="58">Layout</text><text x="200" y="58">References</text><text x="272" y="58" font-weight="700" fill="#185ABD">Review</text><text x="322" y="58">View</text></g>
+  <rect x="268" y="62" width="46" height="2" fill="#185ABD"/>
+  <rect x="18" y="68" width="96" height="24" rx="4" fill="#E8F0FB" stroke="#9cbbe6"/><text x="66" y="84" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185ABD" font-weight="700">💬 New Comment</text>
+  <rect x="60" y="108" width="330" height="252" fill="#fff" stroke="#e1dfdd"/>
+  <rect x="84" y="134" width="200" height="10" rx="3" fill="#2b2b2b" opacity=".85"/>
+  <rect x="82" y="156" width="250" height="14" fill="#FFE8A3"/>
+  <rect x="84" y="159" width="244" height="7" rx="3" fill="#888"/>
+  <rect x="84" y="180" width="270" height="7" rx="3" fill="#bbb"/><rect x="84" y="196" width="230" height="7" rx="3" fill="#bbb"/>
+  <rect x="408" y="140" width="214" height="112" rx="8" fill="#fff" stroke="#cfd6de"/>
+  <circle cx="426" cy="160" r="10" fill="#E0602A"/><text x="426" y="164" fill="#fff" font-size="9" text-anchor="middle" font-family="sans-serif">EL</text>
+  <text x="442" y="164" font-family="sans-serif" font-size="11" font-weight="700" fill="#223">Emmanuel Lucio</text>
+  <text x="420" y="190" font-family="sans-serif" font-size="11" fill="#223"><tspan fill="#185ABD" font-weight="700">@Alex Garza</tspan> can you add a</text>
+  <text x="420" y="206" font-family="sans-serif" font-size="11" fill="#223">source for this sentence?</text>
+  <rect x="586" y="222" width="28" height="22" rx="5" fill="#185ABD"/><text x="600" y="237" text-anchor="middle" fill="#fff" font-size="12" font-family="sans-serif">➤</text>
+  <path d="M390 163 L408 170" stroke="#9cbbe6" stroke-width="1.5"/>
+  <g font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">
+    <circle cx="70" cy="163" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="70" y="168">1</text>
+    <circle cx="122" cy="74" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="122" y="79">2</text>
+    <circle cx="622" cy="148" r="13" fill="#E0602A" stroke="#fff" stroke-width="2"/><text x="622" y="153">3</text>
+  </g>
+</svg>
+</template>
+
+<script>
+(function(){
+"use strict";
+var PAGES=[
+  {id:"home",label:"Welcome & Objectives",sect:"Introduction"},
+  {id:"lesson-1",label:"Lesson 1: Create & Save",sect:"Lessons & Practice"},
+  {id:"practice-1",label:"Practice 1"},
+  {id:"lesson-2",label:"Lesson 2: Share & Permissions"},
+  {id:"practice-2",label:"Practice 2"},
+  {id:"lesson-3",label:"Lesson 3: Edit & Comment"},
+  {id:"practice-3",label:"Practice 3"},
+  {id:"summary",label:"Summary & Flashcards",sect:"Wrap-up"},
+  {id:"final-assessment",label:"Final Assessment"}
+];
+var store={get:function(k,d){try{var v=localStorage.getItem("od332_"+k);return v?JSON.parse(v):d}catch(e){return d}},
+           set:function(k,v){try{localStorage.setItem("od332_"+k,JSON.stringify(v))}catch(e){}}};
+var visited=store.get("visited",{});
+
+/* ---- fill screenshots from templates ---- */
+function svgFrom(id){var t=document.getElementById("svg-"+id);return t?t.innerHTML:"";}
+document.querySelectorAll("[data-svg]").forEach(function(el){el.innerHTML=svgFrom(el.getAttribute("data-svg"));});
+document.querySelectorAll(".scene[data-scene]").forEach(function(el){el.innerHTML=svgFrom(el.getAttribute("data-scene"));});
+
+/* ---- navigation ---- */
+var navList=document.getElementById("navList");
+PAGES.forEach(function(p,i){
+  if(p.sect){var s=document.createElement("li");s.className="sect-label";s.textContent=p.sect;s.setAttribute("aria-hidden","true");navList.appendChild(s);}
+  var li=document.createElement("li");li.dataset.id=p.id;
+  li.innerHTML='<a href="#'+p.id+'"><span class="dot">'+(i+1)+'</span><span>'+p.label+'</span></a>';
+  navList.appendChild(li);
+});
+function current(){var h=(location.hash||"").replace("#","");return PAGES.some(function(p){return p.id===h})?h:"home";}
+function show(){
+  var id=current();
+  document.querySelectorAll("section.page").forEach(function(s){s.classList.toggle("active",s.id==="p-"+id);});
+  navList.querySelectorAll("li[data-id]").forEach(function(li){
+    var a=li.querySelector("a");
+    if(li.dataset.id===id)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");
+  });
+  visited[id]=true;store.set("visited",visited);updateProgress();
+  var pg=PAGES.find(function(p){return p.id===id});
+  document.title=pg.label+" · OneDrive Step-by-Step (UTRGV)";
+  window.scrollTo(0,0);
+  document.getElementById("sideNav").classList.remove("open");
+  document.getElementById("menuBtn").setAttribute("aria-expanded","false");
+  stopSpeech();
+  var main=document.getElementById("content");if(main&&document.activeElement&&document.activeElement.tagName==="A")main.focus({preventScroll:true});
+}
+function updateProgress(){
+  var n=0;
+  navList.querySelectorAll("li[data-id]").forEach(function(li){var d=!!visited[li.dataset.id];li.classList.toggle("done",d);if(d){n++;li.querySelector(".dot").textContent="✓";}});
+  var pct=Math.round(n/PAGES.length*100);
+  document.getElementById("progFill").style.width=pct+"%";
+  document.getElementById("progText").textContent=pct+"% complete";
+}
+window.addEventListener("hashchange",show);
+document.getElementById("menuBtn").addEventListener("click",function(){
+  var n=document.getElementById("sideNav");var o=n.classList.toggle("open");this.setAttribute("aria-expanded",o?"true":"false");
+});
+
+/* ---- text to speech (audio narration) ---- */
+var speaking=null;
+function stopSpeech(){try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}
+  document.querySelectorAll("[data-listen]").forEach(function(b){b.textContent=b.dataset.orig||b.textContent;});speaking=null;}
+document.querySelectorAll("[data-listen]").forEach(function(b){
+  b.dataset.orig=b.textContent;
+  b.addEventListener("click",function(){
+    if(!("speechSynthesis" in window)){b.textContent="Audio not supported in this browser";return;}
+    if(speaking===b){stopSpeech();return;}
+    stopSpeech();
+    var sec=document.getElementById(b.dataset.listen);
+    var txt=Array.prototype.map.call(sec.querySelectorAll(".narrate"),function(n){return n.innerText}).join(" ");
+    try{var u=new SpeechSynthesisUtterance(txt);u.rate=1;u.lang="en-US";u.onend=function(){stopSpeech()};
+      speechSynthesis.speak(u);speaking=b;b.textContent="⏹ Stop audio";}catch(e){b.textContent="Audio unavailable";}
+  });
+});
+
+/* ---- animated demo player ---- */
+(function(){
+  var root=document.getElementById("demo1");if(!root)return;
+  var steps=[
+    {scene:"od",x:22,y:20,cap:"Step 1 · After signing in at microsoft365.com, open OneDrive. Click “+ Create or upload” in the top-left."},
+    {scene:"menu",x:20,y:43,cap:"Step 2 · A menu opens. Choose “Word document.” A blank document opens in Word for the web."},
+    {scene:"word",x:17,y:7,cap:"Step 3 · Click the name “Document1” at the top. Type a clear name, like EDTC3332_ClassNotes_Week9, and press Enter."},
+    {scene:"word",x:62,y:50,cap:"Step 4 · Type your notes. “Saved ✓” next to the name means AutoSave stored your work in OneDrive."},
+    {scene:"files",x:46,y:37,cap:"Step 5 · Go back to OneDrive → My files. Your new document is at the top of the list. Done!"}
+  ];
+  var i=-1,timer=null,cur=root.querySelector(".cursor"),rip=root.querySelector(".ripple"),cap=root.querySelector(".caption"),
+      pb=root.querySelector(".pbtn"),dots=root.querySelector(".pdots");
+  steps.forEach(function(){dots.appendChild(document.createElement("span"))});
+  cur.style.left="70%";cur.style.top="70%";
+  function go(n){
+    i=Math.max(0,Math.min(steps.length-1,n));var s=steps[i];
+    root.querySelectorAll(".scene").forEach(function(sc,k){sc.classList.remove("on")});
+    var scenes=root.querySelectorAll('.scene[data-scene="'+s.scene+'"]');scenes[0].classList.add("on");
+    if(s.scene==="word"&&i>=3){var f=scenes[0].querySelector(".fname");if(f)f.textContent="EDTC3332_ClassNotes…";}
+    else{var f2=scenes[0].querySelector(".fname");if(f2)f2.textContent="Document1";}
+    cur.style.left=s.x+"%";cur.style.top=s.y+"%";
+    setTimeout(function(){rip.style.left=(s.x+1)+"%";rip.style.top=(s.y+2)+"%";rip.classList.remove("go");void rip.offsetWidth;rip.classList.add("go");},900);
+    cap.textContent=s.cap;
+    dots.querySelectorAll("span").forEach(function(d,k){d.classList.toggle("on",k===i)});
+  }
+  function play(){if(timer){pause();return;}if(i>=steps.length-1)i=-1;pb.textContent="⏸ Pause";go(i+1);
+    timer=setInterval(function(){if(i>=steps.length-1){pause();pb.textContent="↺ Replay";return;}go(i+1);},4200);}
+  function pause(){clearInterval(timer);timer=null;pb.textContent="▶ Play";}
+  pb.addEventListener("click",play);
+  root.querySelector(".prev").addEventListener("click",function(){pause();go(i-1)});
+  root.querySelector(".next").addEventListener("click",function(){pause();go(i+1)});
+  root.querySelector('.scene[data-scene="od"]').classList.add("on");
+})();
+
+/* ---- Practice 1: click-through simulation ---- */
+(function(){
+  var stage=document.getElementById("sim1Stage"),task=document.getElementById("sim1Task"),fb=document.getElementById("sim1Fb");
+  var flow=[
+    {scene:"od",task:"Step 1 of 3: You're in OneDrive. Click where you would start a NEW file.",
+      hots:[{x:2,y:15,w:20,h:10,ok:true,label:"Create or upload button"},{x:1,y:35,w:21,h:9,label:"My files"},{x:1,y:45,w:21,h:8,label:"Shared"},{x:26,y:35,w:45,h:9,label:"Documents folder"},{x:30,y:2,w:40,h:8,label:"Search box"}],
+      good:"Correct! “+ Create or upload” is where every new file starts.",
+      hint:"Not quite. Look for the button that starts with a plus sign (+) in the top-left."},
+    {scene:"menu",task:"Step 2 of 3: The menu is open. Which option makes a new Word file?",
+      hots:[{x:4,y:29,w:30,h:8,label:"Folder"},{x:4,y:38,w:30,h:9,ok:true,label:"Word document"},{x:4,y:48,w:30,h:8,label:"Excel workbook"},{x:4,y:57,w:30,h:8,label:"PowerPoint presentation"},{x:4,y:76,w:30,h:8,label:"Files upload"}],
+      good:"Correct! “Word document” opens a blank file in Word for the web.",
+      hint:"Not quite. You need a Word file. Look for the blue Word icon."},
+    {scene:"word",task:"Step 3 of 3: The new file is called “Document1.” Click where you would rename it.",
+      hots:[{x:11,y:2,w:20,h:8,ok:true,label:"File name Document1"},{x:84,y:2,w:13,h:8,label:"Share button"},{x:8,y:13,w:7,h:7,label:"Home tab"},{x:24,y:28,w:52,h:30,label:"Document page"}],
+      good:"Correct! Clicking the file name at the top lets you type a new name. Simulation complete! 🎉",
+      hint:"Not quite. The file's name appears at the very top of the window, next to “Word.”"}
+  ];
+  var step=0;
+  function render(){
+    var f=flow[step];stage.innerHTML=svgFrom(f.scene);task.textContent=f.task;fb.className="feedback";
+    stage.querySelectorAll(".badge").forEach(function(b){b.style.display="none"});
+    f.hots.forEach(function(h){
+      var b=document.createElement("button");b.type="button";b.className="hot";b.setAttribute("aria-label",h.label);
+      b.style.left=h.x+"%";b.style.top=h.y+"%";b.style.width=h.w+"%";b.style.height=h.h+"%";
+      b.addEventListener("click",function(){
+        if(h.ok){b.classList.add("correct");say(fb,"good",f.good);
+          stage.querySelectorAll(".hot").forEach(function(x){x.disabled=true});
+          if(step<flow.length-1){setTimeout(function(){step++;render();},1400);}
+        }else{say(fb,"bad",h.label+" isn't it. "+f.hint);}
+      });
+      stage.appendChild(b);
+    });
+  }
+  document.getElementById("sim1Reset").addEventListener("click",function(){step=0;fb.className="feedback";render();});
+  render();
+})();
+
+function say(el,kind,msg){el.className="feedback show "+kind;el.textContent=msg;}
+
+/* ---- filename checker ---- */
+document.getElementById("fnameBtn").addEventListener("click",checkName);
+document.getElementById("fname").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();checkName();}});
+function checkName(){
+  var v=document.getElementById("fname").value.trim(),fb=document.getElementById("fnameFb"),tips=[];
+  if(!v){say(fb,"info","Type a filename first.");return;}
+  if(/[\/\\:*?"<>|]/.test(v))tips.push("Remove special characters like / \\ : * ? \" < > |");
+  if(/^(document|doc|untitled|new|book|file)\s*\d*(\.docx)?$/i.test(v))tips.push("“"+v+"” is a default name. Nobody will know what's inside");
+  if(/final/i.test(v)&&/(final.*final|v\d)/i.test(v))tips.push("Skip “final_FINAL_v3.” OneDrive keeps version history for you");
+  if(v.replace(/\.docx$/i,"").length<8)tips.push("It's very short. Add the class and the assignment");
+  var hasCourse=/[a-z]{3,4}\s?_?-?\d{4}/i.test(v);
+  var hasWhat=/(note|essay|lab|project|paper|draft|hw|homework|week|quiz|study|report|outline|group)/i.test(v);
+  if(!hasCourse)tips.push("Add the course code (like EDTC3332) so you know which class it's for");
+  if(!hasWhat)tips.push("Say what it is (Notes, Essay2, Lab3, Group Project…)");
+  if(!tips.length)say(fb,"good","✅ Great filename! “"+v+"” tells anyone which class it's for and what's inside.");
+  else say(fb,"bad","Almost there. Tips: "+tips.join("; ")+". Example: EDTC3332_ClassNotes_Week9");
+}
+
+/* ---- checklists ---- */
+document.querySelectorAll(".checklist").forEach(function(list){
+  var key=list.dataset.key,saved=store.get("chk_"+key,{});
+  var boxes=list.querySelectorAll("input[type=checkbox]");
+  function upd(){
+    var all=true;boxes.forEach(function(b){b.closest("li").classList.toggle("checked",b.checked);if(!b.checked)all=false;});
+    var fb=list.nextElementSibling;
+    if(list.dataset.done&&fb&&fb.classList.contains("feedback")){if(all)say(fb,"good","🎉 "+list.dataset.done);else fb.className="feedback";}
+    if(key&&key.indexOf("fa")===0)partA();
+  }
+  boxes.forEach(function(b){b.checked=!!saved[b.id];b.addEventListener("change",function(){saved[b.id]=b.checked;store.set("chk_"+key,saved);upd();});});
+  upd();
+});
+function partA(){
+  var boxes=document.querySelectorAll('[data-key^="fa"] input'),n=0;boxes.forEach(function(b){if(b.checked)n++;});
+  var fb=document.getElementById("partAFb");if(!fb)return;
+  if(n===boxes.length)say(fb,"good","✅ Part A complete: all "+n+" performance tasks done. Objectives 1–3 demonstrated.");
+  else say(fb,"info",n+" of "+boxes.length+" tasks completed.");
+}
+
+/* ---- matching: can view / can edit ---- */
+var SCEN=[
+  {t:"Submitting your essay link to your professor for grading.",a:"view",w:"Your professor needs to read and grade it, not change your work."},
+  {t:"Your group of four is writing a lab report together.",a:"edit",w:"Every teammate needs to type their section."},
+  {t:"Sharing your finished study guide with your whole class group chat.",a:"view",w:"Classmates can read it, and nobody can accidentally delete your work."},
+  {t:"A writing tutor will help you revise and fix grammar in your draft.",a:"edit",w:"The tutor needs to make suggestions and changes directly in the draft."},
+  {t:"Showing a family member your class schedule document.",a:"view",w:"They only need to look at it."},
+  {t:"Your lab partner needs to add the data from Tuesday's experiment.",a:"edit",w:"Adding data means changing the file, so they need edit access."}
+];
+function buildMatch(){
+  var box=document.getElementById("matchRows");box.innerHTML="";
+  SCEN.forEach(function(s,i){
+    var row=document.createElement("div");row.className="match-row";
+    row.innerHTML='<div><strong>'+(i+1)+'.</strong> '+s.t+'</div><div class="choices" role="group" aria-label="Permission for scenario '+(i+1)+'">'+
+      '<button type="button" class="choice" data-v="view" aria-pressed="false">👁️ Can view</button><button type="button" class="choice" data-v="edit" aria-pressed="false">✏️ Can edit</button></div><div class="why"></div>';
+    row.querySelectorAll(".choice").forEach(function(b){b.addEventListener("click",function(){
+      row.querySelectorAll(".choice").forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+      var ok=b.dataset.v===s.a;row.className="match-row "+(ok?"ok":"no");
+      row.querySelector(".why").textContent=(ok?"✅ Correct: ":"❌ Better choice: "+(s.a==="view"?"Can view":"Can edit")+". ")+s.w;
+      scoreMatch();
+    });});
+    box.appendChild(row);
+  });
+  document.getElementById("matchFb").className="feedback";
+}
+function scoreMatch(){
+  var rows=document.querySelectorAll("#matchRows .match-row"),done=0,ok=0;
+  rows.forEach(function(r){if(r.classList.contains("ok")||r.classList.contains("no"))done++;if(r.classList.contains("ok"))ok++;});
+  if(done===rows.length){var fb=document.getElementById("matchFb");
+    say(fb,ok===rows.length?"good":"info","You got "+ok+" of "+rows.length+" correct. "+(ok===rows.length?"Perfect! You know when to give view vs. edit access.":"Review the feedback, then click Try again."));}
+}
+document.getElementById("matchReset").addEventListener("click",buildMatch);
+buildMatch();
+
+/* ---- share it right ---- */
+document.getElementById("shareBtn").addEventListener("click",function(){
+  var to=document.getElementById("shareTo").value,p=document.getElementById("sharePerm").value,fb=document.getElementById("shareFb");
+  if(!to||!p){say(fb,"info","Choose who to share with and a permission first.");return;}
+  if(to==="alex"&&p==="edit")say(fb,"good","✅ Sent! Alex can now open Group Project Notes and add a section. Right person, right permission.");
+  else if(to!=="alex")say(fb,"bad","❌ Check the recipient. Alex is the one who asked. Sharing with others gives access to people who didn't need it.");
+  else say(fb,"bad","❌ Right person, but Alex wants to add a section. With Can view, Alex can only read. Choose Can edit.");
+});
+
+/* ---- ordering ---- */
+var ORDER=["Open the shared document from Shared (or the email link)","Highlight the sentence you want to give feedback on","Click Review → New Comment","Type your feedback with an @mention and post it","Revise one sentence of your own section","Reopen the file later from Recent to check for replies"];
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var cur=shuffle(ORDER);if(cur.join()===ORDER.join())cur.reverse();
+function drawOrder(){
+  var ol=document.getElementById("orderList");ol.innerHTML="";
+  cur.forEach(function(t,i){
+    var li=document.createElement("li");
+    li.innerHTML='<span class="n">'+(i+1)+'</span><span class="t">'+t+'</span><button type="button" aria-label="Move up: '+t+'">▲</button><button type="button" aria-label="Move down: '+t+'">▼</button>';
+    var b=li.querySelectorAll("button");b[0].disabled=i===0;b[1].disabled=i===cur.length-1;
+    b[0].addEventListener("click",function(){mv(i,-1,0)});b[1].addEventListener("click",function(){mv(i,1,1)});
+    ol.appendChild(li);
+  });
+}
+function mv(i,d,which){var j=i+d;var t=cur[i];cur[i]=cur[j];cur[j]=t;drawOrder();document.getElementById("orderFb").className="feedback";
+  var btn=document.querySelectorAll("#orderList li")[j].querySelectorAll("button")[which];if(btn&&!btn.disabled)btn.focus();else document.querySelectorAll("#orderList li")[j].querySelectorAll("button")[1-which].focus();}
+document.getElementById("orderBtn").addEventListener("click",function(){
+  var lis=document.querySelectorAll("#orderList li"),ok=0;
+  lis.forEach(function(li,i){var g=cur[i]===ORDER[i];li.classList.toggle("ok",g);li.classList.toggle("no",!g);if(g)ok++;});
+  say(document.getElementById("orderFb"),ok===ORDER.length?"good":"bad",ok===ORDER.length?"✅ Perfect order! Open → highlight → comment → post → revise → reopen.":ok+" of "+ORDER.length+" in the right spot. Green steps are correct. Move the red ones and check again.");
+});
+document.getElementById("orderShuffle").addEventListener("click",function(){cur=shuffle(ORDER);drawOrder();document.getElementById("orderFb").className="feedback";});
+drawOrder();
+
+/* ---- best comment ---- */
+(function(){
+  var opts=[
+    {t:"“This is wrong.”",ok:false,w:"Too vague. Your teammate won't know what to fix."},
+    {t:"“@Alex Garza this sentence is a little general. Could you add one example, like how OneDrive keeps version history?”",ok:true,w:"Specific, kind, and the @mention makes sure Alex gets notified."},
+    {t:"Delete the sentence and write your own version without telling anyone.",ok:false,w:"Changing a teammate's writing without a comment can cause confusion. Comment first."},
+    {t:"“Looks good I guess.”",ok:false,w:"Not helpful. It doesn't point to anything to improve."}
+  ];
+  var box=document.getElementById("cmtChoices"),fb=document.getElementById("cmtFb");
+  opts.forEach(function(o,i){
+    var b=document.createElement("button");b.type="button";b.className="choice";b.style.cssText="display:block;width:100%;text-align:left;margin-bottom:8px;font-weight:400";
+    b.setAttribute("role","radio");b.setAttribute("aria-checked","false");b.textContent=String.fromCharCode(65+i)+". "+o.t;
+    b.addEventListener("click",function(){box.querySelectorAll(".choice").forEach(function(x){x.setAttribute("aria-checked","false");x.style.borderColor=""});
+      b.setAttribute("aria-checked","true");b.style.borderColor=o.ok?"var(--good)":"var(--bad)";say(fb,o.ok?"good":"bad",(o.ok?"✅ ":"❌ ")+o.w);});
+    box.appendChild(b);
+  });
+})();
+
+/* ---- flashcards ---- */
+(function(){
+  var C=[["OneDrive","Cloud storage in your UTRGV Microsoft 365 account. Files are saved online and open from any device."],
+    ["AutoSave","Word for the web saves changes automatically. Look for “Saved” next to the file name."],
+    ["Can view","The person can open and read the file but can't change it. Best for professors."],
+    ["Can edit","The person can change, comment on, and reshare the file. Best for teammates."],
+    ["Comment","A note attached to highlighted text that gives feedback without changing the writing."],
+    ["@mention","Typing @ plus a name in a comment notifies that person by email."],
+    ["Shared view","The OneDrive page listing files others shared with you and files you shared."],
+    ["Version history","File → Info → Version History. See or restore earlier versions of a file."]];
+  var box=document.getElementById("cards");
+  C.forEach(function(c){
+    var b=document.createElement("button");b.type="button";b.className="flip";b.setAttribute("aria-pressed","false");
+    b.setAttribute("aria-label","Flashcard: "+c[0]+". Press to flip.");
+    b.innerHTML='<div class="in"><div class="f"><div>'+c[0]+'<small>tap to flip</small></div></div><div class="b" aria-live="polite">'+c[1]+'</div></div>';
+    b.addEventListener("click",function(){var on=b.getAttribute("aria-pressed")==="true";b.setAttribute("aria-pressed",on?"false":"true");});
+    box.appendChild(b);
+  });
+})();
+
+/* ---- final quiz ---- */
+var QUIZ=[
+  {obj:"Obj. 1",type:"mc",q:"Where do you click to start a new Word document in OneDrive?",o:["My files","+ Create or upload","Recycle bin","Shared"],a:[1],w:"New files start from “+ Create or upload” (sometimes labeled “+ Add new”)."},
+  {obj:"Obj. 1",type:"mc",q:"Which filename best follows the naming pattern from this module?",o:["Document1.docx","paper final FINAL v3.docx","HIST1301_Essay2_Lucio.docx","my stuff.docx"],a:[2],w:"Course + assignment + name tells anyone what the file is."},
+  {obj:"Obj. 1",type:"tf",q:"True or False: In Word for the web, you must click a Save button or your work will be lost.",o:["True","False"],a:[1],w:"False. AutoSave saves your work, and “Saved” appears next to the file name."},
+  {obj:"Obj. 1",type:"mc",q:"You created a file yesterday but can't remember where it went. Where should you look first?",o:["Recycle bin","Recent or My files in OneDrive","Your email inbox","The Share window"],a:[1],w:"Recent and My files list your files with the date they were last changed."},
+  {obj:"Obj. 2",type:"mc",q:"You're submitting a OneDrive link to your professor for grading. Which permission fits best?",o:["Can edit","Can view","Give no permission","Recycle bin"],a:[1],w:"Professors need to read your work, not change it. Give the least access needed."},
+  {obj:"Obj. 2",type:"mc",q:"Your teammate Alex needs to add a section to your group's notes. What do you do?",o:["Email Alex a copy as an attachment","Share the file with Alex using Can view","Share the file with Alex using Can edit","Share the file with the whole class using Can edit"],a:[2],w:"Right person (Alex) plus right permission (Can edit) to add content."},
+  {obj:"Obj. 2",type:"ma",q:"Select ALL the good habits before submitting a OneDrive link for an assignment.",o:["Check the link setting above “Copy link”","Test the link in a private/incognito window","Give everyone Can edit just in case","Choose Can view unless the instructor asks for edit"],a:[0,1,3],w:"Check the setting, test the link, and choose Can view. Giving everyone edit access is risky."},
+  {obj:"Obj. 3",type:"mc",q:"You want to give feedback on a teammate's sentence without changing their words. What should you use?",o:["Delete and retype it","A comment","Version history","Can view"],a:[1],w:"Comments add feedback without changing the writing."},
+  {obj:"Obj. 3",type:"mc",q:"In a comment, what does typing @ followed by a teammate's name do?",o:["Makes the comment private","Notifies that teammate by email","Deletes their edits","Shares the file with the whole class"],a:[1],w:"An @mention sends that person a notification so they see your comment."},
+  {obj:"Obj. 3",type:"mc",q:"A teammate accidentally deleted half the document. How can you get the older version back?",o:["Create a new document","File → Info → Version History","Change the permission to Can view","Rename the file"],a:[1],w:"Version history lets you view and restore earlier versions."}
+];
+function buildQuiz(){
+  var f=document.getElementById("quiz");f.innerHTML="";
+  QUIZ.forEach(function(q,i){
+    var d=document.createElement("div");d.className="q";d.id="q"+i;
+    var inType=q.type==="ma"?"checkbox":"radio";
+    var h='<fieldset><span class="qtag">'+q.obj+(q.type==="ma"?" · Select all that apply":q.type==="tf"?" · True/False":" · Multiple choice")+'</span><legend>'+(i+1)+'. '+q.q+'</legend>';
+    q.o.forEach(function(o,k){h+='<label><input type="'+inType+'" name="q'+i+'" value="'+k+'"> <span>'+o+'</span></label>';});
+    h+='</fieldset><div class="qfb"></div>';d.innerHTML=h;f.appendChild(d);
+  });
+  var b=document.createElement("button");b.type="submit";b.className="btn btn-primary";b.textContent="Submit quiz";f.appendChild(b);
+  document.getElementById("quizResult").className="result";
+}
+document.getElementById("quiz").addEventListener("submit",function(e){
+  e.preventDefault();var score=0,unanswered=0;
+  QUIZ.forEach(function(q,i){
+    var picked=Array.prototype.map.call(document.querySelectorAll('input[name="q'+i+'"]:checked'),function(x){return +x.value}).sort();
+    if(!picked.length)unanswered++;
+    var ok=picked.join()===q.a.slice().sort().join();if(ok)score++;
+    var d=document.getElementById("q"+i);d.className="q "+(ok?"ok":"no");
+    d.querySelector(".qfb").textContent=(ok?"✅ Correct. ":"❌ Correct answer: "+q.a.map(function(k){return q.o[k]}).join("; ")+". ")+q.w;
+  });
+  var r=document.getElementById("quizResult"),pass=score>=8,pct=score*10;
+  var partDone=Array.prototype.every.call(document.querySelectorAll('[data-key^="fa"] input'),function(b){return b.checked});
+  r.className="result show "+(pass?"pass":"fail");
+  r.innerHTML='<div class="score">'+score+' / 10 ('+pct+'%)</div>'+
+    (pass?'<p><strong>You passed!</strong> '+(partDone?'You also completed every hands-on task in Part A.':'Finish the Part A hands-on checklist above to complete the full assessment.')+'</p>'
+         :'<p><strong>Not quite yet.</strong> You need 8 of 10 to pass. Review the feedback on each question, revisit the lessons using the menu, and try again.</p>')+
+    (unanswered?'<p class="tts-note">'+unanswered+' question(s) were left blank.</p>':'')+
+    (pass&&partDone?'<div class="cert"><div style="font-family:Lexend,system-ui,sans-serif;font-weight:700;color:var(--navy);font-size:1.2rem">Certificate of Completion</div><p style="margin:.4em 0">Microsoft OneDrive: A Step-by-Step Guide for UTRGV Students</p><p style="margin:0">Quiz score '+pct+'% · Hands-on tasks 7/7 · '+new Date().toLocaleDateString()+'</p></div>':'')+
+    '<p style="margin-top:14px"><button type="button" class="btn btn-ghost" id="retake">↺ Retake quiz</button></p>';
+  document.getElementById("retake").addEventListener("click",function(){buildQuiz();document.getElementById("quiz").scrollIntoView({behavior:"smooth"});});
+  r.scrollIntoView({behavior:"smooth",block:"center"});
+});
+buildQuiz();
+partA();
+show();
+})();
+</script>
+</body>
+</html>
